@@ -1,5 +1,5 @@
 import { SafetyNotice } from "@/components/SafetyNotice";
-import { PracticeTimeline } from "@/components/PracticeTimeline";
+import { AgeGroupPracticeTimeline } from "@/components/AgeGroupPracticeTimeline";
 import { AgeGroupBadge } from "@/components/AgeGroupBadge";
 import { presetPracticePlans } from "@/src/data/basketball/practice-plans";
 
@@ -30,9 +30,13 @@ export default function PlansPage() {
               <div className="max-w-3xl">
                 <div className="mb-3 flex flex-wrap gap-2">
                   <AgeGroupBadge ageGroupId={plan.ageGroupId} />
-                  {plan.isIntensive ? (
+                  {plan.format === "camp" || plan.format === "intensive" ? (
                     <span className="inline-flex items-center rounded-full border border-amber-300/30 bg-amber-400/10 px-2.5 py-1 text-xs font-semibold text-amber-100">
                       Camp / intensive
+                    </span>
+                  ) : plan.format === "elite" ? (
+                    <span className="inline-flex items-center rounded-full border border-sky-300/30 bg-sky-400/10 px-2.5 py-1 text-xs font-semibold text-sky-100">
+                      Elite
                     </span>
                   ) : (
                     <span className="inline-flex items-center rounded-full border border-emerald-300/30 bg-emerald-400/10 px-2.5 py-1 text-xs font-semibold text-emerald-100">
@@ -41,7 +45,7 @@ export default function PlansPage() {
                   )}
                 </div>
                 <h2 className="text-2xl font-black text-white">{plan.title}</h2>
-                <p className="mt-3 text-sm leading-6 text-zinc-300">{plan.introGoal}</p>
+                <p className="mt-3 text-sm leading-6 text-zinc-300">{plan.goal}</p>
                 <p className="mt-3 text-sm font-semibold text-zinc-200">Load note: {plan.loadNote}</p>
               </div>
               <div className="rounded-lg border border-white/10 bg-panel px-5 py-4 text-center">
@@ -56,7 +60,7 @@ export default function PlansPage() {
               </div>
             ) : null}
 
-            <PracticeTimeline segments={plan.segments} />
+            <AgeGroupPracticeTimeline plan={plan} compact />
           </article>
         ))}
       </div>

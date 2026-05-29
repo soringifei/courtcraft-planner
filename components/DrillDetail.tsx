@@ -42,6 +42,11 @@ export function DrillDetail({ drill }: DrillDetailProps) {
             <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs font-semibold text-zinc-200">
               {drill.category.replaceAll("_", " ")}
             </span>
+            {drill.trainingDomain ? (
+              <span className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs font-semibold text-zinc-200">
+                {drill.trainingDomain.replaceAll("_", " ")}
+              </span>
+            ) : null}
           </div>
           <div>
             <h1 className="text-3xl font-black text-white sm:text-5xl">{drill.title}</h1>
@@ -81,6 +86,12 @@ export function DrillDetail({ drill }: DrillDetailProps) {
               route to assemble full sessions.
             </p>
           </div>
+          {drill.basketballTransfer ? (
+            <div className="rounded-lg border border-sky-300/20 bg-sky-400/10 p-4">
+              <h2 className="text-base font-bold text-white">Basketball transfer</h2>
+              <p className="mt-2 text-sm leading-6 text-sky-50">{drill.basketballTransfer}</p>
+            </div>
+          ) : null}
         </div>
 
         <BasketballCourtSvg diagram={drill.diagram} label={`${drill.title} diagram`} />

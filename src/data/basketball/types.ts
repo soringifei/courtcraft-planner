@@ -12,6 +12,49 @@ export type DrillCategory =
   | "team_concepts"
   | "conditioning";
 
+export type TrainingCategoryId =
+  | "ball_handling"
+  | "passing"
+  | "shooting"
+  | "finishing"
+  | "defense"
+  | "rebounding"
+  | "decision_making"
+  | "team_concepts"
+  | "small_sided_games"
+  | "movement_prep"
+  | "strength_conditioning"
+  | "multiplanar_speed"
+  | "conditioning"
+  | "recovery";
+
+export type TrainingDomain = "basketball" | "strength_conditioning" | "hybrid";
+
+export type PhysicalQuality =
+  | "coordination"
+  | "balance"
+  | "acceleration"
+  | "deceleration"
+  | "lateral_speed"
+  | "multiplanar_speed"
+  | "landing_mechanics"
+  | "single_leg_strength"
+  | "core_stiffness"
+  | "reactive_agility"
+  | "conditioning"
+  | "recovery";
+
+export type PracticePlacement =
+  | "movement_prep"
+  | "skill_block"
+  | "shooting_block"
+  | "finishing_block"
+  | "decision_block"
+  | "team_block"
+  | "speed_agility_block"
+  | "conditioning_finisher"
+  | "cooldown";
+
 export type Intensity = "low" | "medium" | "high";
 
 export type CourtMode = "half" | "full";
@@ -75,6 +118,11 @@ export type Drill = {
   scoring: string;
   safetyNote: string;
   diagram: CourtDiagram;
+  categoryTags?: TrainingCategoryId[];
+  trainingDomain?: TrainingDomain;
+  physicalQualities?: PhysicalQuality[];
+  practicePlacement?: PracticePlacement[];
+  basketballTransfer?: string;
 };
 
 export type AgeGroup = {
@@ -100,40 +148,71 @@ export type PracticeFocus =
 export type PracticeIntensity = "light" | "standard" | "high";
 
 export type PracticeSegmentType =
-  | "warm_up"
-  | "skill_block_1"
-  | "water_rest"
-  | "skill_block_2"
-  | "competitive_game"
+  | "movement_prep"
+  | "speed_agility"
+  | "skill_development"
+  | "shooting"
+  | "finishing"
+  | "decision_making"
   | "team_concept"
-  | "cooldown";
+  | "small_sided_game"
+  | "conditioning"
+  | "cooldown"
+  | "water_break"
+  | "teaching";
 
 export type PracticePlanSegment = {
   id: string;
-  type: PracticeSegmentType;
   title: string;
-  minutes: number;
+  segmentType: PracticeSegmentType;
+  durationMin: number;
   drillIds: string[];
   coachingEmphasis: string;
+  intensity: Intensity;
 };
 
-export type GeneratedPracticePlan = {
-  ageGroupId: AgeGroupId;
-  durationMin: number;
-  focus: PracticeFocus;
-  intensity: PracticeIntensity;
-  planWarning?: string;
-  segments: PracticePlanSegment[];
-};
-
-export type PresetPracticePlan = {
+export type PracticePlan = {
   id: string;
   title: string;
   ageGroupId: AgeGroupId;
   durationMin: number;
-  isIntensive: boolean;
+  format: "recommended" | "camp" | "intensive" | "elite";
+  goal: string;
   warning?: string;
-  introGoal: string;
   segments: PracticePlanSegment[];
   loadNote: string;
+};
+
+export type GeneratedPracticePlan = PracticePlan & {
+  focus: PracticeFocus;
+  selectedIntensity: PracticeIntensity;
+  planWarning?: string;
+};
+
+export type PresetPracticePlan = PracticePlan;
+
+export type AgeGroupTrainingProfile = {
+  ageGroupId: AgeGroupId;
+  title: string;
+  ageRange: string;
+  recommendedDurationMin: number;
+  recommendedDurationMax: number;
+  intensiveDurationMin: number;
+  mainGoal: string;
+  developmentPriorities: Array<{
+    title: string;
+    description: string;
+  }>;
+  avoid: string[];
+  loadGuidance: string;
+  recommendedPlanId: string;
+  intensivePlanId: string;
+  featuredCategoryIds: TrainingCategoryId[];
+  featuredStrengthConditioningCategoryIds: TrainingCategoryId[];
+  multiplanarSpeedFocus: {
+    explanation: string;
+    movementPatterns: string[];
+    recommendedDrillIds: string[];
+    basketballTransfer: string[];
+  };
 };

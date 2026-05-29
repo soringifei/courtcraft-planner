@@ -214,7 +214,7 @@ function drillTitle(drillId) {
 
 const pdf = new PdfDocument();
 pdf.text("CourtCraft Basketball Training Plans", { size: 22, bold: true, leading: 28 });
-pdf.text("Practice plans exported from the local app data, including U16.", {
+pdf.text("Practice plans exported from the local app data, including age-group S&C integration.", {
   size: 12,
   leading: 17,
 });
@@ -247,7 +247,7 @@ for (const plan of presetPracticePlans) {
     bold: true,
     leading: 19,
   });
-  pdf.text(plan.introGoal, { size: 10, leading: 14 });
+  pdf.text(plan.goal, { size: 10, leading: 14 });
   if (plan.warning) {
     pdf.text(`Warning: ${plan.warning}`, { size: 10, leading: 14 });
   }
@@ -260,7 +260,7 @@ for (const plan of presetPracticePlans) {
         ? segment.drillIds.map((drillId) => drillTitle(drillId)).join("; ")
         : "Water, reset, teaching check, and role rotation.";
 
-    pdf.text(`${segment.minutes} min - ${segment.title}: ${drillsText}`, {
+    pdf.text(`${segment.durationMin} min - ${segment.title}: ${drillsText}`, {
       size: 9.5,
       leading: 13.5,
       indent: 12,
@@ -283,10 +283,11 @@ for (const ageGroup of ageGroups) {
 
   for (const drill of groupDrills) {
     pdf.text(
-      `${drill.title} - ${drill.durationMin} min, ${drill.intensity}, ${drill.category.replaceAll(
-        "_",
-        " ",
-      )}. ${drill.objective}`,
+      `${drill.title} - ${drill.durationMin} min, ${drill.intensity}, ${(
+        drill.categoryTags ?? [drill.category]
+      )
+        .join(", ")
+        .replaceAll("_", " ")}. ${drill.objective}`,
       { size: 9.5, leading: 13.5, indent: 12 },
     );
   }

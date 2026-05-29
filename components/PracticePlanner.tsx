@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ageGroups } from "@/src/data/basketball/age-groups";
 import { generatePracticePlan } from "@/src/data/basketball/practice-plans";
 import type {
@@ -43,10 +43,7 @@ export function PracticePlanner() {
   const durationMin =
     durationChoice === "recommended" ? selectedAgeGroup.defaultDurationMin : Number(durationChoice);
 
-  const plan = useMemo(
-    () => generatePracticePlan({ ageGroupId, durationMin, focus, intensity }),
-    [ageGroupId, durationMin, focus, intensity],
-  );
+  const plan = generatePracticePlan({ ageGroupId, durationMin, focus, intensity });
 
   return (
     <div className="grid gap-8 lg:grid-cols-[360px_1fr]">

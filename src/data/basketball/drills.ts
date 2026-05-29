@@ -1,4 +1,11 @@
-import type { CourtDiagram, Drill } from "./types";
+import { strengthConditioningDrills } from "./strength-conditioning-drills";
+import type {
+  CourtDiagram,
+  Drill,
+  PhysicalQuality,
+  PracticePlacement,
+  TrainingCategoryId,
+} from "./types";
 
 type Players = CourtDiagram["players"];
 type Lines = CourtDiagram["lines"];
@@ -28,7 +35,7 @@ const fullDiagram = (
   ...extras,
 });
 
-export const drills = [
+const basketballDrillSeeds = [
   {
     id: "red-light-green-light-dribble",
     title: "Red Light Green Light Dribble",
@@ -3228,6 +3235,46 @@ export const drills = [
     ),
   },
 ] satisfies Drill[];
+
+function categoryTagsFor(drill: Drill): TrainingCategoryId[] {
+  if (drill.id.includes("king-of-the-court")) return ["small_sided_games", "decision_making"];
+  if (drill.id.includes("shell-defense")) return ["team_concepts", "defense"];
+  if (drill.id.includes("transition")) return ["team_concepts", "conditioning"];
+  if (drill.id.includes("rebound")) return ["rebounding", "defense"];
+  return [drill.category === "movement" ? "movement_prep" : drill.category];
+}
+
+function placementsFor(drill: Drill): PracticePlacement[] {
+  if (drill.category === "shooting") return ["shooting_block", "skill_block"];
+  if (drill.category === "finishing") return ["finishing_block", "skill_block"];
+  if (drill.category === "decision_making") return ["decision_block"];
+  if (drill.category === "team_concepts") return ["team_block"];
+  if (drill.category === "movement") return ["movement_prep"];
+  if (drill.category === "conditioning") return ["conditioning_finisher"];
+  return ["skill_block"];
+}
+
+function physicalQualitiesFor(drill: Drill): PhysicalQuality[] {
+  if (drill.category === "movement") return ["coordination", "balance"];
+  if (drill.category === "defense") return ["lateral_speed", "deceleration"];
+  if (drill.category === "conditioning") return ["conditioning"];
+  if (drill.title.toLowerCase().includes("closeout")) return ["deceleration", "lateral_speed"];
+  return [];
+}
+
+export const basketballDrills: Drill[] = basketballDrillSeeds.map((drill) => {
+  const category = drill.category as Drill["category"];
+
+  return {
+    ...drill,
+    categoryTags: categoryTagsFor(drill),
+    trainingDomain: category === "conditioning" ? "hybrid" : "basketball",
+    physicalQualities: physicalQualitiesFor(drill),
+    practicePlacement: placementsFor(drill),
+  };
+});
+
+export const drills: Drill[] = [...basketballDrills, ...strengthConditioningDrills];
 
 export const drillById = Object.fromEntries(
   drills.map((drill) => [drill.id, drill]),

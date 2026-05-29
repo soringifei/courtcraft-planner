@@ -2,7 +2,10 @@ import Link from "next/link";
 import { Dumbbell } from "lucide-react";
 
 const navItems = [
+  { href: "/age-groups", label: "Age Groups" },
   { href: "/drills", label: "Drills" },
+  { href: "/categories", label: "Categories" },
+  { href: "/strength-conditioning", label: "Strength & Conditioning" },
   { href: "/planner", label: "Planner" },
   { href: "/plans", label: "Plans" },
 ];
@@ -10,7 +13,7 @@ const navItems = [
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-30 border-b border-white/10 bg-ink/90 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
         <Link
           href="/"
           className="flex items-center gap-3 rounded-md text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"
@@ -23,7 +26,7 @@ export function SiteHeader() {
             <span className="block text-xs text-zinc-400">Elite player development</span>
           </span>
         </Link>
-        <nav aria-label="Primary navigation" className="flex items-center gap-1">
+        <nav aria-label="Primary navigation" className="flex w-full items-center gap-1 overflow-x-auto md:w-auto">
           {navItems.map((item) => (
             <Link
               key={item.href}
