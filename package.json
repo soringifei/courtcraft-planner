@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node api.js && next dev",
     "build": "next build",
     "lint": "eslint .",
-    "start": "next start",
+    "start": "node api.js && next start",
     "typecheck": "tsc --noEmit",
     "generate:training-pdf": "node scripts/generate-training-pdf.mjs"
   },
